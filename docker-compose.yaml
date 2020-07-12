@@ -7,5 +7,7 @@ services:
     build: ./
     image: notes-bot:latest
     read_only: true
+    environment:
+      - PORT=${PORT}
     ports:
-      - "8080:8080"
+      - "${PORT}:${PORT}"

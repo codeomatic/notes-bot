@@ -9,8 +9,10 @@ RUN rm -r /root/.cache
 # Add our application files
 RUN mkdir app
 COPY ./app /app
-WORKDIR /app
 
-EXPOSE 8080
-
-CMD ["/usr/local/bin/uwsgi", "--ini", "/etc/uwsgi.ini"]
+CMD exec uwsgi \
+    --http-socket 0.0.0.0:$PORT \
+    --processes 1 --threads 8 \
+    --static-map /static=/app/static/ \
+    --callable app \
+    --wsgi-file /app/main.py
