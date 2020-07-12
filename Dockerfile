@@ -1,9 +1,9 @@
-FROM codeomatic/base-uwsgi-cloud-run:v20.07.3
+FROM python:3.8-slim
 
+RUN pip3 install gunicorn
 # Copy python requirements file
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
-RUN pip3 install gunicorn
 # Remove pip cache. We are not going to need it anymore
 RUN rm -r /root/.cache
 
@@ -14,13 +14,4 @@ WORKDIR $APP_HOME
 COPY ./app ./
 
 
-CMD exec uwsgi \
-    --http-socket 0.0.0.0:$PORT \
-    --static-map /static=/app/static/ \
-    --callable app \
-    --wsgi-file main.py \
-    --master \
-    --processes 1 \
-    --threads 2
-
-#CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
