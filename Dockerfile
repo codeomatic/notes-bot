@@ -12,7 +12,6 @@ COPY ./app /app
 
 CMD exec uwsgi \
     --http-socket 0.0.0.0:$PORT \
-    --processes 1 --threads 8 \
     --static-map /static=/app/static/ \
     --callable app \
     --wsgi-file /app/main.py
