@@ -14,10 +14,13 @@ WORKDIR $APP_HOME
 COPY ./app ./
 
 
-#CMD exec uwsgi \
-#    --http-socket 0.0.0.0:$PORT \
-#    --static-map /static=/app/static/ \
-#    --callable app \
-#    --wsgi-file /app/main.py
+CMD exec uwsgi \
+    --http-socket 0.0.0.0:$PORT \
+    --static-map /static=/app/static/ \
+    --callable app \
+    --wsgi-file main.py \
+    --master \
+    --processes 1 \
+    --threads 2
 
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
+#CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
