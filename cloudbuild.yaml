@@ -1,0 +1,13 @@
+steps:
+  # Build container
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/$_ENDPOINT_NAME', '.' ]
+  # push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/$_ENDPOINT_NAME']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['beta', 'run', 'deploy', '$_ENDPOINT_NAME', '--image', 'gcr.io/$PROJECT_ID/$_ENDPOINT_NAME', '--region', 'us-central1', '--allow-unauthenticated']
+
+images:
+  - 'gcr.io/$PROJECT_ID/$_ENDPOINT_NAME'
