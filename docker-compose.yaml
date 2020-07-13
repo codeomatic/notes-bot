@@ -2,11 +2,11 @@ version: "3.7"
 
 services:
 
-  app:
-    container_name: notes-bot
-    build: ./
-    image: notes-bot:latest
-    read_only: true
+  webhook:
+    container_name: webhook
+    build: ./webhook
+    image: webhook:latest
+    #read_only: true
     environment:
       - PORT=${PORT}
     ports:
